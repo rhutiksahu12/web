@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+<link rel="stylesheet" href="/css/style.css"/>
+<link rel="stylesheet" href="/css/custom.css"/>
+<body>
+<div class="navbar">
+    <h2 class="logo" >Welcome <b><span th:text="${session.user.name}"></span></b> To Admin Panel</h2>
+    <a href="/adminDashboard"><i class="fa fa-fw fa-home"></i> Dashboard</a>
+    <a class="active" href="/product"><i class="fa fa-fw fa-search"></i> Product Management</a>
+    <a style="float: right;" href="/logout"><i class="fa fa-fw fa-user"></i> Logout</a>
+</div>
+<br/><br/><br/>
+<div class="main-section">
+    <div class="filter">
+        <h2>Search Product</h2>
+        <form action="/searchProduct" style="max-width:500px;margin:auto;display: inherit;" method="post">
+            <h4 class="linkrs" ><a href="/addProduct" >Add Product</a></h4>
+            <div class="input-container">
+                <i class="fa fa-product-hunt icon"></i>
+                <input class="input-field" type="text" placeholder="Product name" name="productName"/>
+            </div>
+            <div class="input-container">
+                <i style="height: 45px;" class="fa fa-product-hunt icon"></i>
+                <select style="padding: 3px 45px 21px 27px;height: 45px;" class="input-field" id="cars" name="color">
+                    <option value="White">White</option>
+                    <option value="Green">Green</option>
+                    <option value="Red">Red</option>
+                    <option value="Yellow">Yellow</option>
+                </select>
+            </div>
+            <button type="submit" class="btn">Search</button>
+        </form>
+    </div>
+
+
+
+
+    <br/><br/><br/><br/><br/><br/>
+    <table id="customers">
+        <tr>
+            <th>Product ID</th>
+            <th>Product Name</th>
+            <th>Price</th>
+            <th>Color</th>
+            <th>Quantity</th>
+            <th>Action</th>
+        </tr>
+        <tr th:if="${productList.empty}">
+            <td colspan="6"> No Products Available </td>
+        </tr>
+
+        <tr th:each="product : ${productList}">
+            <td th:text="${product.productID}"></td>
+            <td th:text="${product.productName}"></td>
+            <td th:text="${product.price}"></td>
+            <td th:text="${product.color}"></td>
+            <td th:text="${product.quantity}"></td>
+            <td >
+                <a th:href="@{'/editProduct'(productID=${product.productID})}" >Edit</a>
+                <a th:href="@{'/deleteProduct'(productID=${product.productID})}" >Delete</a>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html> 

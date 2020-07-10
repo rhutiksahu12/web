@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+<link rel="stylesheet" href="/css/style.css"/>
+<link rel="stylesheet" href="/css/custom.css"/>
+<body>
+<div class="navbar">
+    <h2 class="logo" >Welcome <b><span th:text="${session.user.name}"></span></b> To Admin Panel</h2>
+    <a href="/adminDashboard"><i class="fa fa-fw fa-home"></i> Dashboard</a>
+    <a class="active" href="/product"><i class="fa fa-fw fa-search"></i> Product Management</a>
+    <a style="float: right;" href="/logout"><i class="fa fa-fw fa-user"></i> Logout</a>
+</div>
+<br/><br/><br/>
+<div class="main-section">
+    <div class="addproduct">
+        <form action="/editProduct" style="max-width:500px;margin:auto" method="post">
+            <input type="hidden" th:value="${singleProduct.productID}" name="productID"/>
+            <h2>Edit Product</h2>
+            <span th:if="${errorMessage !=null}" th:text="${errorMessage}" style="color: red"></span>
+            <span th:if="${successMessage !=null}" th:text="${successMessage}" style="color: green"></span>
+            <div class="input-container">
+                <i class="fa fa-500px icon"></i>
+                <input class="input-field" type="text" placeholder="Product Name" name="productName" th:value="${singleProduct.productName}"/>
+            </div>
+            <div class="input-container">
+                <i class="fa fa-money icon"></i>
+                <input class="input-field" type="number" placeholder="Price" name="price" th:value="${singleProduct.price}"/>
+            </div>
+            <div class="input-container">
+                <i class="fa fa-contao icon"></i>
+                <select style="padding: 3px 45px 21px 27px;height: 45px;" class="input-field" id="cars" name="color" >
+                    <option value="White" th:selected="${singleProduct.color == 'White'}">White</option>
+                    <option value="Green" th:selected="${singleProduct.color == 'Green'}">Green</option>
+                    <option value="Red" th:selected="${singleProduct.color == 'Red'}">Red</option>
+                    <option value="Yellow" th:selected="${singleProduct.color == 'Yellow'}">Yellow</option>
+                </select>
+            </div>
+            <div class="input-container">
+                <i class="fa fa-sort-amount-asc icon"></i>
+                <input class="input-field" type="number" placeholder="Quantity" name="quantity" th:value="${singleProduct.quantity}"/>
+            </div>
+            <button type="submit" class="btn" style="color:blue">Edit</button>
+
+        </form>
+    </div>
+</div>
+</body>
+</html> 
