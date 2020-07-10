@@ -13,7 +13,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Controller
 public class LoginController {
@@ -49,7 +53,7 @@ public class LoginController {
     }
 
     @RequestMapping(name = "/login",value = "/login",method = RequestMethod.POST)
-    public ModelAndView login(@ModelAttribute LoginRequest loginRequest, RedirectAttributes redirectAttributes, HttpSession httpSession){
+    public ModelAndView login(@ModelAttribute LoginRequest loginRequest, RedirectAttributes redirectAttributes, HttpSession httpSession, HttpServletResponse response){
         ModelAndView modelAndView = new ModelAndView("redirect:/customerDashboard");
         if(loginRequest!=null && loginRequest.getPassword()!=null && loginRequest.getPassword().length()>0 && loginRequest.getUserName()!=null && loginRequest.getUserName().length()>0){
             User user= authenticationService.authenticateUser(loginRequest);
@@ -62,6 +66,10 @@ public class LoginController {
                     modelAndView = new ModelAndView("redirect:/customerDashboard");
                 }
                 httpSession.setAttribute("user",user);
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy-hh:mm:ss");
+                Cookie cookie = new Cookie("LastLogin", simpleDateFormat.format(new Date()));
+                cookie.setMaxAge(7 * 24 * 60 * 60);
+                response.addCookie(cookie);
             }
             else{
                 redirectAttributes.addFlashAttribute("errorMessage","Invalid Username/Password");
